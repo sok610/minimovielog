@@ -19,16 +19,14 @@ app.get('/', (req, res) => {
     res.redirect('/movies');
 });
 
-// movies/new
+// /movies' routers
 const movieRoutes = require('./routes/movies');
 app.use('/movies', movieRoutes);
 
 
 
-
-
-
 // Start Server
-app.listen(3000, () => {
-    console.log("Server running on https://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
