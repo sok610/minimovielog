@@ -1,0 +1,65 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-3xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4 text-purple-600">🎬 Movie List</h1>
+
+    <!-- 검색 + 필터 폼 -->
+    <form action="/movies" method="GET" class="flex gap-4 mb-6">
+      <input type="text" name="q" placeholder="Search title"
+        value="<%= query %>"
+        class="flex-1 px-4 py-2 border rounded shadow-sm" />
+
+      <select name="minRating"
+        class="px-4 py-2 border rounded shadow-sm">
+        <option value="">Any Rating</option>
+        <% for(let i = 1; i <= 5; i++) { %>
+          <option value="<%= i %>" <%= minRating == i ? 'selected' : '' %>><%= i %>+</option>
+        <% } %>
+      </select>
+
+      <button type="submit"
+        class="bg-purple-600 text-white px-4 py-2 rounded shadow hover:bg-purple-700">
+        Filter
+      </button>
+    </form>
+
+    <!-- 영화 카드 -->
+    <div class="space-y-4">
+      <% if (movies.length === 0) { %>
+        <p>No movies found.</p>
+      <% } else { %>
+        <% movies.forEach(movie => { %>
+          <div class="bg-white p-4 rounded-lg shadow flex justify-between items-start">
+            <div>
+              <h2 class="text-xl font-semibold"><%= movie.title %></h2>
+              <p class="text-sm text-gray-500 mb-2">⭐ <%= movie.rating %>/5</p>
+              <p class="text-gray-700"><%= movie.review %></p>
+            </div>
+            <div class="space-x-2">
+              <a href="/movies/<%= movie._id %>/edit"
+                class="text-sm text-blue-500 hover:underline">✏️ Edit</a>
+              <form action="/movies/<%= movie._id %>/delete" method="POST" class="inline">
+                <button type="submit" class="text-sm text-red-500 hover:underline">❌ Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+
+    <div class="mt-8">
+      <a href="/movies/new"
+         class="inline-block bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600">
+        ➕ Add New Movie
+      </a>
+    </div>
+  </div>
+</body>
+</html>
